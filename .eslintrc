@@ -13,5 +13,9 @@
     "expect": true,
     "beforeEach": true,
     "ga": true
+  },
+  "rules": {
+    "arrow-body-style": 0,
+    "new-cap": 0
   }
 }

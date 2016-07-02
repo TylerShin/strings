@@ -1,25 +1,25 @@
-import { Accounts } from 'meteor/accounts-base'
 import React from 'react';
+import { createUser } from './actions';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import { connect } from 'react-redux';
 
 class Signin extends React.Component {
   handleSignup(e) {
     e.preventDefault();
     const { username, password, email, passwordConfirmation } = this.refs;
+    const { dispatch } = this.props;
+
     if (password.value !== passwordConfirmation.value) {
       return alert('암호와 암호확인이 다릅니다. 다시 한 번 확인해주세요');
     }
-    return Accounts.createUser({
+    return dispatch(createUser({
       username: username.value,
       email: email.value,
       password: password.value,
-    }, (err) => {
-      if (err) {
-        alert('회원가입 중 문제가 발생했습니다!', err.reason);
-      }
-    });
+    }));
   }
   render() {
-    return  (
+    return (
       <div className="signin-component">
         <div className="signup-header">
           <h2 className="signup-header-title">가입 전 주의사항</h2>
@@ -44,4 +44,16 @@ class Signin extends React.Component {
   }
 }
 
-export default Signin;
+Signin.propTypes = {
+  dispatch: React.PropTypes.func.isRequired,
+  currentUser: ImmutablePropTypes.map.isRequired,
+};
+
+function mapStateToProps(state) {
+  const { currentUser } = state;
+  return {
+    currentUser,
+  };
+}
+
+export default connect(mapStateToProps)(Signin);
