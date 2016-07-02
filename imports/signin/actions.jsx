@@ -1,5 +1,4 @@
-import { Accounts } from 'meteor/accounts-base'
-import { Meteor } from 'meteor/meteor';
+import { Meteor } from 'meteor/meteor'
 import { fromJS } from 'immutable';
 import { push } from 'react-router-redux';
 
@@ -10,11 +9,11 @@ const addUser = () => {
   };
 };
 
-export const createUser = ({ username, email, password }) => {
+export const login = ({ username, password }) => {
   return (dispatch) => {
-    Accounts.createUser({ username, email, password }, (err) => {
+    Meteor.loginWithPassword(username, password, (err) => {
       if (err) {
-        alert('회원가입 중 문제가 발생했습니다!', err.reason);
+        alert('로그인 중 에러가 발생했습니다.', err.message);
       } else {
         dispatch(addUser());
         dispatch(push('/'));

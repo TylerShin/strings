@@ -3,7 +3,7 @@ import { createUser } from './actions';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
 
-class Signin extends React.Component {
+class Signup extends React.Component {
   handleSignup(e) {
     e.preventDefault();
     const { username, password, email, passwordConfirmation } = this.refs;
@@ -18,9 +18,10 @@ class Signin extends React.Component {
       password: password.value,
     }));
   }
+
   render() {
     return (
-      <div className="signin-component">
+      <div className="signup-component">
         <div className="signup-header">
           <h2 className="signup-header-title">가입 전 주의사항</h2>
           <div className="signup-header-description">
@@ -44,7 +45,7 @@ class Signin extends React.Component {
   }
 }
 
-Signin.propTypes = {
+Signup.propTypes = {
   dispatch: React.PropTypes.func.isRequired,
   currentUser: ImmutablePropTypes.map.isRequired,
 };
@@ -56,4 +57,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(Signin);
+export default connect(mapStateToProps)(Signup);
