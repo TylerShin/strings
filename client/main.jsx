@@ -12,6 +12,7 @@ import Immutable from 'immutable';
 import rootReducer from '../imports/rootReducer';
 import '../imports/startup/accounts-config.js';
 import routes from '../imports/routes';
+import { loadUser }  from '../imports/actions';
 
 const routerMid = routerMiddleware(browserHistory);
 
@@ -48,4 +49,5 @@ Meteor.startup(() => {
     </Provider>
     ,
     document.getElementById('render-target'));
+  store.dispatch(loadUser());
 });
