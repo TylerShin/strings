@@ -20,6 +20,7 @@ Meteor.methods({
     Tags.insert({
       tag,
       createdAt: new Date(),
+      updatedAt: new Date(),
     });
   },
 });
