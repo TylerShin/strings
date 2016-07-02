@@ -1,0 +1,17 @@
+{
+  "extends": "eslint-config-airbnb",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true
+    }
+  },
+  "globals": {
+    "jest": true,
+    "require": true,
+    "it": true,
+    "describe": true,
+    "expect": true,
+    "beforeEach": true,
+    "ga": true
+  }
+}
