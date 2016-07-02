@@ -11,7 +11,7 @@ const Navbar = ({ currentUser, dispatch }) => {
   let rightMenu;
   if (currentUser.get('user').isEmpty()) {
     rightMenu = (
-      <Link to="signin">
+      <Link to="/signin">
         <i className="fa fa-key fa-lg" />
       </Link>
     );

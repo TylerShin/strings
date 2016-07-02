@@ -27,11 +27,11 @@ const adminCheck = (nextState, replace, callback) => {
 
 export default (
   <Route name="app" path="/" component={App}>
-    <Route name="signup" path="signup" component={Signup} onEnter={checkLogin} />
-    <Route name="signin" path="signin" component={Signin} onEnter={checkLogin} />
-    <Route name="posts" path="posts/:tagId" component={Posts} />
-    <Route name="post" path="posts/:tagId/:postId" component={Post} />
-    <Route name="writingForm" path="posts/:tagId/:postId/new" component={WritingForm} />
-    <Route name="tag" path="tylor/tag" component={TagAdmin} />
+    <Route path="/signup" component={Signup} onEnter={checkLogin} />
+    <Route path="/signin" component={Signin} onEnter={checkLogin} />
+    <Route path="/posts/:tagId" component={Posts} />
+    <Route path="/posts/:tagId/new" component={WritingForm} />
+    <Route path="/posts/:tagId/:postId" component={Post} />
+    <Route path="/tylor/tag" component={TagAdmin} />
   </Route>
 );

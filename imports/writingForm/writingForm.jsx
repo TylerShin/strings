@@ -1,9 +1,20 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { insertPost } from './actions';
 
 class WritingForm extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
-    console.log('ggogoogogo');
+    const tagId = this.props.params.tagId;
+    const dispatch = this.props.dispatch;
+    const title = this.refs.title.value;
+    const content = this.refs.content.value;
+
+    if (!tagId) {
+      alert('잘못된 접근입니다.');
+      return;
+    }
+    dispatch(insertPost({ title, content, tagId }));
   }
 
   render() {
@@ -21,4 +32,9 @@ class WritingForm extends React.Component {
   }
 }
 
-export default WritingForm;
+WritingForm.propTypes = {
+  params: React.PropTypes.object.isRequired,
+  dispatch: React.PropTypes.func.isRequired,
+};
+
+export default connect()(WritingForm);

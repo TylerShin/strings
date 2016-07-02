@@ -26,8 +26,13 @@ Meteor.methods({
       tagId,
       title,
       content,
+      userId: this.userId,
       createdAt: new Date(),
       updatedAt: new Date(),
+    }, (err) => {
+      if (err) {
+        throw new Meteor.Error(err.message);
+      }
     });
   },
 });
