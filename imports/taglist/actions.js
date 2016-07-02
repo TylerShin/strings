@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Tracker } from 'meteor/tracker';
 import { fromJS } from 'immutable';
-import { Tags } from '../../api/tags';
+import { Tags } from '../api/tags';
 
 export function loadTags() {
   return dispatch => {

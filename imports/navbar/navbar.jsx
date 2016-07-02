@@ -1,8 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router';
 import ImmutablePropTypes from 'react-immutable-proptypes';
+import { openTagList } from './actions';
 
-const Navbar = ({ currentUser }) => {
+const Navbar = ({ currentUser, dispatch }) => {
+  function openMenu() {
+    dispatch(openTagList());
+  }
+
   let rightMenu;
   if (currentUser.get('user').isEmpty()) {
     rightMenu = (
@@ -12,7 +17,7 @@ const Navbar = ({ currentUser }) => {
     );
   } else {
     rightMenu = (
-      <span>
+      <span onClick={openMenu}>
         <i className="fa fa-th-large fa-lg" />
       </span>
     );
@@ -35,6 +40,7 @@ const Navbar = ({ currentUser }) => {
 
 Navbar.propTypes = {
   currentUser: ImmutablePropTypes.map.isRequired,
+  dispatch: React.PropTypes.func.isRequired,
 };
 
 export default Navbar;

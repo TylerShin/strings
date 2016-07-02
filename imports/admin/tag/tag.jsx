@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { connect } from 'react-redux';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { loadTags, addTag } from './actions';
+import { loadTags, addTag } from '../../taglist/actions';
 
 class TagAdmin extends React.Component {
   componentWillMount() {
@@ -31,13 +31,16 @@ class TagAdmin extends React.Component {
 
   render() {
     const { tags } = this.props;
-    const tagListNode = tags.map((tag, index) => {
-      return (
-        <li key={index}>
-          {tag.get('tag')}
-        </li>
-      );
-    });
+    let tagListNode;
+    if (tags.get('tags').count() > 0) {
+      tagListNode = tags.get('tags').map((tag, index) => {
+        return (
+          <li key={index}>
+            {tag.get('tag')}
+          </li>
+        );
+      });
+    }
     return (
       <div className="tag-component">
         <h2>Tag 추가</h2>
@@ -58,7 +61,7 @@ class TagAdmin extends React.Component {
 TagAdmin.propTypes = {
   dispatch: React.PropTypes.func.isRequired,
   currentUser: ImmutablePropTypes.map.isRequired,
-  tags: ImmutablePropTypes.list.isRequired,
+  tags: ImmutablePropTypes.map.isRequired,
 };
 
 function mapStateToProps(state) {
