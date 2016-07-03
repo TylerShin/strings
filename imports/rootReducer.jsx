@@ -5,6 +5,7 @@ import tags, { INITIAL_TAGS } from './reducers/tags';
 import posts, { INITIAL_POSTS } from './reducers/posts';
 import post, { INITIAL_POST } from './reducers/post';
 import subPosts, { INITIAL_SUBPOSTS } from './reducers/subPosts';
+import comments, { INITIAL_COMMENTS } from './reducers/comments';
 
 export const initialState = {
   currentUser: INITIAL_CURRENT_USER,
@@ -12,6 +13,7 @@ export const initialState = {
   posts: INITIAL_POSTS,
   post: INITIAL_POST,
   subPosts: INITIAL_SUBPOSTS,
+  comments: INITIAL_COMMENTS,
 };
 
 const rootReducer = combineReducers({
@@ -20,6 +22,7 @@ const rootReducer = combineReducers({
   posts,
   post,
   subPosts,
+  comments,
   routing: routerReducer,
 });
 
