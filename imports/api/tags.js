@@ -8,6 +8,10 @@ if (Meteor.isServer) {
   Meteor.publish('tags', () => {
     return Tags.find({});
   });
+
+  Meteor.publish('tag', (tagId) => {
+    return Tags.find(tagId);
+  });
 }
 
 Meteor.methods({
@@ -19,6 +23,7 @@ Meteor.methods({
 
     Tags.insert({
       tag,
+      postsCount: 0,
       createdAt: new Date(),
       updatedAt: new Date(),
     });

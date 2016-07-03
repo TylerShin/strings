@@ -1,15 +1,13 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
+import { Tags } from './tags';
 
 export const Posts = new Mongo.Collection('posts');
 
 if (Meteor.isServer) {
-  Meteor.publish('posts', ({ tagId, before, count }) => {
-    if (tagId) {
-      return Posts.find({ tagId }, { sort: { updatedAt: -1 }, skip: before, limit: count });
-    }
-    return Posts.find({}, { sort: { updatedAt: -1 }, skip: before, limit: count });
+  Meteor.publish('posts', ({ tagId, count }) => {
+    return Posts.find({ tagId }, { sort: { updatedAt: -1 }, limit: count });
   });
 
   Meteor.publish('post', ({ postId }) => {
@@ -41,6 +39,9 @@ Meteor.methods({
     }, (err) => {
       if (err) {
         throw new Meteor.Error(err.message);
+      } else {
+        const postsCount = Posts.find({ tagId }).count();
+        Tags.update(tagId, { $set: { postsCount } });
       }
     });
   },

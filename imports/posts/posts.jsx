@@ -1,47 +1,42 @@
 import { Meteor } from 'meteor/meteor';
 import { ReactiveVar } from 'meteor/reactive-var';
+import { createContainer } from 'meteor/react-meteor-data';
 import React from 'react';
+import Inview from 'react-inview';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import { loadPosts } from './actions';
+import { Posts } from '../api/posts';
+import { Tags } from '../api/tags';
+import { fromJS } from 'immutable';
 
-
-class Posts extends React.Component {
-  componentWillMount() {
-    this.before = new ReactiveVar(0);
-    this.postsSubs = Meteor.subscribe('posts', {
-      tagId: this.props.params.tagId,
-      count: 15,
-      before: this.before.get(),
-    });
-  }
-
-  componentDidMount() {
-    const { dispatch } = this.props;
-    dispatch(loadPosts());
-  }
-
+const postsCount = new ReactiveVar(15);
+class PostsContainer extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (this.props.params.tagId !== nextProps.params.tagId) {
-      this.postsSubs.stop();
-      this.before.set(0);
-      this.postsSubs = Meteor.subscribe('posts', {
-        tagId: nextProps.params.tagId,
-        count: 15,
-        before: this.before.get(),
-      });
+      console.log('initialize subscribe count');
+      postsCount.set(15);
+    } else if (this.props.params.postId !== nextProps.params.postId) {
+      console.log('initialize subscribe count');
+      postsCount.set(15);
     }
   }
 
   componentWillUnmount() {
-    this.postsSubs.stop();
+    postsCount.set(15);
+  }
+
+  handleLoadMore() {
+    const { currentTag } = this.props;
+    if (postsCount.get() >= currentTag.get('postsCount')) {
+      return;
+    }
+    postsCount.set(postsCount.get() + 15);
   }
 
   render() {
     const { params, posts } = this.props;
 
-    const postsNode = posts.get('posts').map((post) => {
+    const postsNode = posts.map((post) => {
       return (
         <div className="postlist-postitem-node" key={post.get('_id')}>
           <Link
@@ -64,25 +59,34 @@ class Posts extends React.Component {
             <i className="fa fa-pencil fa-lg" />
           </Link>
           {postsNode}
+          <Inview style={{ height: '1px' }} onInview={() => { this.handleLoadMore(); }} />
         </div>
       </div>
     );
   }
 }
 
-Posts.propTypes = {
+PostsContainer.propTypes = {
   params: React.PropTypes.object.isRequired,
-  dispatch: React.PropTypes.func.isRequired,
+  currentTag: ImmutablePropTypes.map.isRequired,
   currentUser: ImmutablePropTypes.map.isRequired,
-  posts: ImmutablePropTypes.map.isRequired,
+  posts: ImmutablePropTypes.list.isRequired,
 };
 
-function mapStateToProps(state) {
-  const { currentUser, posts } = state;
+export default createContainer(({ params }) => {
+  const postsSubs = Meteor.subscribe('posts', {
+    tagId: params.tagId,
+    count: postsCount.get(),
+  });
+  Meteor.subscribe('tag', params.tagId);
+  const currentTag = fromJS(Tags.findOne(params.tagId)) || fromJS({});
+  const posts = fromJS(Posts.find({ tagId: params.tagId }, { sort: { updatedAt: -1 }, count: postsCount.get() }).fetch());
+  const postsSubsReady = postsSubs.ready();
+  const currentUser = fromJS(Meteor.user()) || fromJS({});
   return {
-    currentUser,
+    currentTag,
     posts,
+    postsSubsReady,
+    currentUser,
   };
-}
-
-export default connect(mapStateToProps)(Posts);
+}, PostsContainer);
