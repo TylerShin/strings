@@ -1,5 +1,6 @@
 {
-  "extends": "eslint-config-airbnb",
+  "plugins": ["meteor"],
+  "extends": ["plugin:meteor/recommended", "eslint-config-airbnb"],
   "parserOptions": {
     "ecmaFeatures": {
       "experimentalObjectRestSpread": true
@@ -12,10 +13,13 @@
     "describe": true,
     "expect": true,
     "beforeEach": true,
-    "ga": true
+    "ga": true,
+    "Meteor": true
   },
   "rules": {
     "arrow-body-style": 0,
-    "new-cap": 0
+    "new-cap": 0,
+    "max-len": 0,
+    "no-param-reassign": 0
   }
 }

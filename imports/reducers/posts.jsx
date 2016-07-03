@@ -4,7 +4,7 @@ export const INITIAL_POSTS = fromJS({
   posts: [],
   isLoading: false,
 });
-export default function currentUserReducer(state = INITIAL_POSTS, action) {
+export default function postsReducer(state = INITIAL_POSTS, action) {
   switch (action.type) {
     case 'FETCH_POSTS': {
       return state.set('posts', action.posts).set('isLoading', false);
