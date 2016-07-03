@@ -24,8 +24,8 @@ export function loadSubPosts({ before, count }) {
   return (dispatch) => {
     Tracker.autorun(() => {
       let subPosts = INITIAL_SUBPOSTS.get('subPosts');
-      if (SubPosts.find({}, { sort: { updatedAt: -1 }, skip: before, limit: count }).count() > 0) {
-        subPosts = SubPosts.find({}, { sort: { updatedAt: -1 }, skip: before, limit: count }).fetch();
+      if (SubPosts.find({}, { sort: { updatedAt: 1 }, skip: before, limit: count }).count() > 0) {
+        subPosts = fromJS(SubPosts.find({}, { sort: { updatedAt: 1 }, skip: before, limit: count }).fetch());
       }
       dispatch({
         type: 'FETCH_SUBPOSTS',

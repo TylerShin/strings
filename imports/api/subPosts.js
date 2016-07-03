@@ -6,7 +6,7 @@ export const SubPosts = new Mongo.Collection('subPosts');
 
 if (Meteor.isServer) {
   Meteor.publish('subPosts', ({ postId, before, count }) => {
-    return SubPosts.find({ postId }, { sort: { updatedAt: -1 }, skip: before, limit: count });
+    return SubPosts.find({ postId }, { sort: { updatedAt: 1 }, skip: before, limit: count });
   });
 }
 

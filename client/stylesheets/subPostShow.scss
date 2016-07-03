@@ -1,0 +1,17 @@
+.subpost-component {
+  padding: 10px;
+  border-top: 1px solid #efefef;
+
+  &:first-child {
+    border-top: 0;
+  }
+
+  &:last-child {
+    border-bottom: 1px solid #efefef;
+  }
+}
+
+.subpost-info {
+  font-size: 12px;
+  margin-bottom: 10px;
+}

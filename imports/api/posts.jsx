@@ -35,6 +35,7 @@ Meteor.methods({
       updatedAt: new Date(),
       views: 0,
       likes: [], // Should be UserId
+      subPostsCount: 0,
       commentsCount: 0,
       clipedCount: 0,
     }, (err) => {

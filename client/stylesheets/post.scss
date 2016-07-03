@@ -1,3 +1,29 @@
-.post-component {
-  margin-top: 20px;
+.post-wrapper {
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid #efefef;
+}
+
+.post-info {
+  text-align: center;
+  font-size: 12px;
+  margin-bottom: 30px;
+}
+
+.post-show-title {
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.post-content {
+  margin-bottom: 10px;
+}
+
+.subpost-info-created-at {
+  float: right;
+}
+
+.subposts-wrapper {
+  margin-bottom: 15px;
 }
