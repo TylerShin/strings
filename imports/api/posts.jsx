@@ -5,11 +5,15 @@ import { check } from 'meteor/check';
 export const Posts = new Mongo.Collection('posts');
 
 if (Meteor.isServer) {
-  Meteor.publish('posts', ({ tagId, count }) => {
+  Meteor.publish('posts', ({ tagId, before, count }) => {
     if (tagId) {
-      return Posts.find({ tagId }, { sort: { updatedAt: -1 }, limit: { count } });
+      return Posts.find({ tagId }, { sort: { updatedAt: -1 }, skip: before, limit: count });
     }
-    return Posts.find({}, { sort: { updatedAt: -1 }, limit: { count } });
+    return Posts.find({}, { sort: { updatedAt: -1 }, skip: before, limit: count });
+  });
+
+  Meteor.publish('post', ({ postId }) => {
+    return Posts.find({ _id: postId });
   });
 }
 

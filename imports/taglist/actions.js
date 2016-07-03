@@ -27,3 +27,9 @@ export function addTag({ tagName }) {
     });
   };
 }
+
+export function closeTagList() {
+  return {
+    type: 'TOGGLE_TAGS',
+  };
+}

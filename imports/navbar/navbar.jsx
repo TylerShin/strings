@@ -27,10 +27,10 @@ const Navbar = ({ currentUser, dispatch }) => {
       <div className="navbar-leftmenu-wrapper">
         <i className="fa fa-user fa-lg" />
       </div>
-      <div className="navbar-logo">
+      <Link to="/" className="navbar-logo">
         <i className="fa fa-long-arrow-down fa-lg" />
         <span className="navbar-logo-title">STRINGS</span>
-      </div>
+      </Link>
       <div className="navbar-rightmenu-wrapper">
         {rightMenu}
       </div>

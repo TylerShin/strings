@@ -3,7 +3,7 @@ import React from 'react';
 import { Route } from 'react-router';
 // Import containers
 import App from './app';
-import Post from './post/post';
+import Post from './posts/post/post';
 import Posts from './posts/posts';
 import WritingForm from './writingForm/writingForm';
 import Signup from './signup/signup';

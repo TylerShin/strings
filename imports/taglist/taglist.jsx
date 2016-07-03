@@ -1,7 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
+import { Link } from 'react-router';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { loadTags } from './actions';
+import { loadTags, closeTagList } from './actions';
 
 class Taglist extends React.Component {
   componentWillMount() {
@@ -17,6 +18,11 @@ class Taglist extends React.Component {
     this.tagSubs.stop();
   }
 
+  handleCloseTagList() {
+    const { dispatch } = this.props;
+    dispatch(closeTagList());
+  }
+
   render() {
     const { tags } = this.props;
     if (!tags.get('isOpen')) {
@@ -26,10 +32,16 @@ class Taglist extends React.Component {
     let tagListNode;
     if (tags.get('tags').count() > 0) {
       tagListNode = tags.get('tags').map((tag, index) => {
+        const tagId = tag.get('_id');
         return (
-          <span className="tag-item" key={index}>
+          <Link
+            to={`/posts/${tagId}`}
+            className="tag-item"
+            key={index}
+            onClick={() => { this.handleCloseTagList(); }}
+          >
             {tag.get('tag')}
-          </span>
+          </Link>
         );
       });
     }
