@@ -33,6 +33,10 @@ Meteor.methods({
       userId: this.userId,
       createdAt: new Date(),
       updatedAt: new Date(),
+      views: 0,
+      likes: [], // Should be UserId
+      commentsCount: 0,
+      clipedCount: 0,
     }, (err) => {
       if (err) {
         throw new Meteor.Error(err.message);

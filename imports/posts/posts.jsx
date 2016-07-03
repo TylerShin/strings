@@ -43,13 +43,14 @@ class Posts extends React.Component {
 
     const postsNode = posts.get('posts').map((post) => {
       return (
-        <Link
-          to={`/posts/${params.tagId}/${post.get('_id')}`}
-          className="posts-post-item-wrapper"
-          key={post.get('_id')}
-        >
-          {post.get('title')}
-        </Link>
+        <div className="postlist-postitem-node" key={post.get('_id')}>
+          <Link
+            to={`/posts/${params.tagId}/${post.get('_id')}`}
+            className="posts-postitem"
+          >
+            {post.get('title')}
+          </Link>
+        </div>
       );
     });
     return (

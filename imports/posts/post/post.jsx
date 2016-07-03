@@ -26,18 +26,27 @@ class Post extends React.Component {
   }
 
   render() {
+    const { post } = this.props;
+    if (post.isEmpty()) {
+      return (
+        <div>
+          잘못된 접근이거나 글이 존재하지 않습니다.
+        </div>
+      );
+    }
     return (
       <div className="post-component">
         <div className="post-header">
           <h2 className="post-title">
-            <span className="post-title-hot-icon">HOT(if Hot only)</span>
-            타이틀
-            <span className="post-title-comment-count">[10] 코멘트숫자</span>
+            {post.get('title')}
+            <span className="post-title-comment-count">
+              {`[${post.get('commentsCount')}]`}
+            </span>
           </h2>
         </div>
         <div className="post-body">
           <div className="post-content">
-            포스트 content
+            {post.get('content')}
           </div>
         </div>
       </div>
