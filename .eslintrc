@@ -20,6 +20,7 @@
     "arrow-body-style": 0,
     "new-cap": 0,
     "max-len": 0,
-    "no-param-reassign": 0
+    "no-param-reassign": 0,
+    "import/no-unresolved": [2, { ignore: ['meteor'] }]
   }
 }

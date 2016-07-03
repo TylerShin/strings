@@ -1,56 +1,28 @@
 import { Meteor } from 'meteor/meteor';
 import { ReactiveVar } from 'meteor/reactive-var';
+import { createContainer } from 'meteor/react-meteor-data';
+import { fromJS } from 'immutable';
+import Inview from 'react-inview';
+import { Posts } from '../../api/posts';
+import { SubPosts } from '../../api/subPosts';
 import moment from 'moment';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { connect } from 'react-redux';
-import { loadPost, loadSubPosts } from './actions';
 import SubPostWritingForm from '../subPostWritingForm/subPostWritingForm';
 import SubPostShow from '../subPostShow/subPostShow';
 
-
-const subPostsSkipCount = new ReactiveVar(0);
+const subPostSubsCount = new ReactiveVar(20);
 class Post extends React.Component {
-  componentWillMount() {
-    this.postSubs = Meteor.subscribe('post', {
-      postId: this.props.params.postId,
-    });
-    this.subPostsSubs = Meteor.subscribe('subPosts', {
-      postId: this.props.params.postId,
-      before: subPostsSkipCount.get(),
-      count: 20,
-    });
-  }
-
-  componentDidMount() {
-    const { params, dispatch } = this.props;
-    dispatch(loadPost(params.postId));
-    dispatch(loadSubPosts({ before: subPostsSkipCount.get(), count: 20 }));
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (this.props.params.postId !== nextProps.params.postId) {
-      this.postSubs.stop();
-      subPostsSkipCount.set(0);
-      this.postSubs = Meteor.subscribe('post', {
-        postId: nextProps.params.postId,
-      });
-      this.subPostsSubs.stop();
-      this.subPostsSubs = Meteor.subscribe('subPosts', {
-        postId: nextProps.params.postId,
-        before: subPostsSkipCount.get(),
-        count: 20,
-      });
-    }
-  }
-
   componentWillUnmount() {
-    this.postSubs.stop();
-    this.subPostsSubs.stop();
+    subPostSubsCount.set(20);
+  }
+
+  handleLoadMore() {
+    subPostSubsCount.set(subPostSubsCount.get() + 20);
   }
 
   render() {
-    const { post, dispatch, currentUser, subPosts } = this.props;
+    const { post, currentUser, subPosts } = this.props;
     if (post.isEmpty()) {
       return (
         <div>
@@ -58,9 +30,9 @@ class Post extends React.Component {
         </div>
       );
     }
-    const subPostsNode = subPosts.get('subPosts').map((subPost) => {
+    const subPostsNode = subPosts.map((subPost) => {
       return (
-        <SubPostShow dispatch={dispatch} currentUser={currentUser} subPost={subPost} key={subPost.get('_id')} />
+        <SubPostShow currentUser={currentUser} subPost={subPost} key={subPost.get('_id')} />
       );
     });
 
@@ -92,28 +64,39 @@ class Post extends React.Component {
         </div>
         <div className="subposts-wrapper">
           {subPostsNode}
+          <Inview onInview={() => { this.handleLoadMore(); }} />
         </div>
-        <SubPostWritingForm dispatch={dispatch} currentUser={currentUser} post={post} />
+        <SubPostWritingForm currentUser={currentUser} post={post} />
       </div>
     );
   }
 }
 
-function mapStateToProps(state) {
-  const { currentUser, post, subPosts } = state;
-  return {
-    currentUser,
-    post,
-    subPosts,
-  };
-}
-
 Post.propTypes = {
   params: React.PropTypes.object.isRequired,
-  dispatch: React.PropTypes.func.isRequired,
   currentUser: ImmutablePropTypes.map.isRequired,
   post: ImmutablePropTypes.map.isRequired,
-  subPosts: ImmutablePropTypes.map.isRequired,
+  subPosts: ImmutablePropTypes.list.isRequired,
 };
 
-export default connect(mapStateToProps)(Post);
+export default createContainer(({ params }) => {
+  const postSubs = Meteor.subscribe('post', {
+    postId: params.postId,
+  });
+  const subPostsSub = Meteor.subscribe('subPosts', {
+    postId: params.postId,
+    count: subPostSubsCount.get(),
+  });
+  const post = fromJS(Posts.findOne({ _id: params.postId })) || fromJS({});
+  const postSubReady = postSubs.ready();
+  const subPosts = fromJS(SubPosts.find({}, { sort: { updatedAt: 1 }, limit: subPostSubsCount.get() }).fetch()) || fromJS({});
+  const subPostsSubReady = subPostsSub.ready();
+  const currentUser = fromJS(Meteor.user()) || fromJS({});
+  return {
+    post,
+    postSubReady,
+    subPosts,
+    subPostsSubReady,
+    currentUser,
+  };
+}, Post);

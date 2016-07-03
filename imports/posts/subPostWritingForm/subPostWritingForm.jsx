@@ -1,18 +1,22 @@
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { addSubPosts } from './actions';
 
 class SubPostWritingForm extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
-    const { dispatch, post } = this.props;
+    const { post } = this.props;
 
-    dispatch(addSubPosts({
+    Meteor.call('subPosts.insert', {
       content: this.refs.content.value,
       tagId: post.get('tagId'),
       postId: post.get('_id'),
-      textareaDom: this.refs.content,
-    }));
+    }, (err) => {
+      if (err) {
+        alert(err.message);
+      } else {
+        this.refs.content.value = '';
+      }
+    });
   }
 
   render() {
@@ -27,7 +31,6 @@ class SubPostWritingForm extends React.Component {
 
 SubPostWritingForm.propTypes = {
   post: ImmutablePropTypes.map.isRequired,
-  dispatch: React.PropTypes.func.isRequired,
 };
 
 export default SubPostWritingForm;

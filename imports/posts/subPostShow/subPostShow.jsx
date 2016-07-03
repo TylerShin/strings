@@ -17,7 +17,6 @@ const SubPostShow = ({ subPost }) => {
 };
 
 SubPostShow.propTypes = {
-  dispatch: React.PropTypes.func.isRequired,
   currentUser: ImmutablePropTypes.map.isRequired,
   subPost: ImmutablePropTypes.map.isRequired,
 };

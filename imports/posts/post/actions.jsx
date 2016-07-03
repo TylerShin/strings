@@ -20,17 +20,23 @@ export function loadPost(postId) {
   };
 }
 
-export function loadSubPosts({ before, count }) {
+export function loadSubPosts({ count }) {
   return (dispatch) => {
     Tracker.autorun(() => {
-      let subPosts = INITIAL_SUBPOSTS.get('subPosts');
-      if (SubPosts.find({}, { sort: { updatedAt: 1 }, skip: before, limit: count }).count() > 0) {
-        subPosts = fromJS(SubPosts.find({}, { sort: { updatedAt: 1 }, skip: before, limit: count }).fetch());
+      if (SubPosts.find({}, { sort: { updatedAt: 1 }, limit: count }).count() > 0) {
+        const subPosts = fromJS(SubPosts.find({}, { sort: { updatedAt: 1 }, limit: count }).fetch());
+        dispatch({
+          type: 'FETCH_SUBPOSTS',
+          subPosts,
+        });
       }
-      dispatch({
-        type: 'FETCH_SUBPOSTS',
-        subPosts,
-      });
     });
+  };
+}
+
+export function loadMoreSubPosts(count) {
+  return {
+    type: 'LOAD_MORE_SUBPOSTS',
+    count,
   };
 }
