@@ -48,17 +48,23 @@ class Posts extends React.Component {
             to={`/posts/${params.tagId}/${post.get('_id')}`}
             className="posts-postitem"
           >
-            {post.get('title')}
+            <span>{post.get('title')} </span>
+            <span>{`[${post.get('subPostsCount')}]`}</span>
           </Link>
         </div>
       );
     });
     return (
       <div className="posts-component">
-        <Link to={`/posts/${params.tagId}/new`} className="post-writing-btn">
-          <i className="fa fa-pencil fa-lg" />
-        </Link>
-        {postsNode}
+        <div className="posts-header-info">
+          현재 이야기 중인 스트링들
+        </div>
+        <div className="posts-wrapper">
+          <Link to={`/posts/${params.tagId}/new`} className="post-writing-btn">
+            <i className="fa fa-pencil fa-lg" />
+          </Link>
+          {postsNode}
+        </div>
       </div>
     );
   }

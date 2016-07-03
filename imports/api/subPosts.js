@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
+import { Posts } from './posts';
 
 export const SubPosts = new Mongo.Collection('subPosts');
 
@@ -33,6 +34,9 @@ Meteor.methods({
     }, (err) => {
       if (err) {
         throw new Meteor.Error(err.message);
+      } else {
+        const count = SubPosts.find({ postId }).count();
+        Posts.update(postId, { $set: { subPostsCount: count, updatedAt: new Date() } });
       }
     });
   },

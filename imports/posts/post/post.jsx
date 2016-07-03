@@ -1,13 +1,13 @@
 import { Meteor } from 'meteor/meteor';
 import { ReactiveVar } from 'meteor/reactive-var';
 import { createContainer } from 'meteor/react-meteor-data';
-import { fromJS } from 'immutable';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import React from 'react';
 import Inview from 'react-inview';
+import moment from 'moment';
+import { fromJS } from 'immutable';
 import { Posts } from '../../api/posts';
 import { SubPosts } from '../../api/subPosts';
-import moment from 'moment';
-import React from 'react';
-import ImmutablePropTypes from 'react-immutable-proptypes';
 import SubPostWritingForm from '../subPostWritingForm/subPostWritingForm';
 import SubPostShow from '../subPostShow/subPostShow';
 
@@ -18,6 +18,10 @@ class Post extends React.Component {
   }
 
   handleLoadMore() {
+    const { post } = this.props;
+    if (subPostSubsCount.get() >= post.get('subPostsCount')) {
+      return;
+    }
     subPostSubsCount.set(subPostSubsCount.get() + 20);
   }
 
@@ -64,7 +68,7 @@ class Post extends React.Component {
         </div>
         <div className="subposts-wrapper">
           {subPostsNode}
-          <Inview onInview={() => { this.handleLoadMore(); }} />
+          <Inview style={{ height: '1px' }} onInview={() => { this.handleLoadMore(); }} />
         </div>
         <SubPostWritingForm currentUser={currentUser} post={post} />
       </div>
