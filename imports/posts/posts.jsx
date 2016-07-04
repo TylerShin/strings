@@ -13,10 +13,8 @@ const postsCount = new ReactiveVar(15);
 class PostsContainer extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (this.props.params.tagId !== nextProps.params.tagId) {
-      console.log('initialize subscribe count');
       postsCount.set(15);
     } else if (this.props.params.postId !== nextProps.params.postId) {
-      console.log('initialize subscribe count');
       postsCount.set(15);
     }
   }

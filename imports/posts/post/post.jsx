@@ -10,6 +10,7 @@ import { Posts } from '../../api/posts';
 import { SubPosts } from '../../api/subPosts';
 import SubPostWritingForm from '../subPostWritingForm/subPostWritingForm';
 import SubPostShow from '../subPostShow/subPostShow';
+import PostsContainer from '../posts';
 
 const subPostSubsCount = new ReactiveVar(20);
 class Post extends React.Component {
@@ -26,7 +27,7 @@ class Post extends React.Component {
   }
 
   render() {
-    const { post, currentUser, subPosts } = this.props;
+    const { params, post, currentUser, subPosts } = this.props;
     if (post.isEmpty()) {
       return (
         <div>
@@ -71,6 +72,7 @@ class Post extends React.Component {
           <Inview style={{ height: '1px' }} onInview={() => { this.handleLoadMore(); }} />
         </div>
         <SubPostWritingForm currentUser={currentUser} post={post} />
+        <PostsContainer params={params} />
       </div>
     );
   }
