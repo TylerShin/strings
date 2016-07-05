@@ -8,9 +8,11 @@ import moment from 'moment';
 import { fromJS } from 'immutable';
 import { Posts } from '../../api/posts';
 import { SubPosts } from '../../api/subPosts';
+// Import components
 import SubPostWritingForm from '../subPostWritingForm/subPostWritingForm';
 import SubPostShow from '../subPostShow/subPostShow';
 import PostsContainer from '../posts';
+import CommentForm from '../commentForm/commentForm';
 
 const subPostSubsCount = new ReactiveVar(20);
 class Post extends React.Component {
@@ -41,6 +43,11 @@ class Post extends React.Component {
       );
     });
 
+    let commentFormNode = null;
+    if (!currentUser.isEmpty()) {
+      CommentFormNode = <CommentForm post={post} />
+    }
+
     return (
       <div className="post-component">
         <div className="post-wrapper">
@@ -66,6 +73,7 @@ class Post extends React.Component {
               {post.get('content')}
             </div>
           </div>
+          {CommentFormNode}
         </div>
         <div className="subposts-wrapper">
           {subPostsNode}
