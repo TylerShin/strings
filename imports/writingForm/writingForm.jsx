@@ -1,20 +1,33 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { insertPost } from './actions';
+import { browserHistory } from 'react-router';
 
 class WritingForm extends React.Component {
+  componentDidMount() {
+    $('.post-summernote').summernote({
+      height: 400,
+    });
+  }
+
   handleSubmit(e) {
     e.preventDefault();
     const tagId = this.props.params.tagId;
-    const dispatch = this.props.dispatch;
     const title = this.refs.title.value;
-    const content = this.refs.content.value;
-
+    const content = $('.post-summernote').summernote('code');
     if (!tagId) {
       alert('잘못된 접근입니다.');
       return;
     }
-    dispatch(insertPost({ title, content, tagId }));
+    Meteor.call('posts.insert', {
+      title,
+      content,
+      tagId,
+    }, (err) => {
+      if (err) {
+        alert(err.message);
+      } else {
+        browserHistory.push(`/posts/${tagId}`);
+      }
+    });
   }
 
   render() {
@@ -24,7 +37,7 @@ class WritingForm extends React.Component {
           <label>제목</label>
           <input type="text" ref="title" />
           <label>내용</label>
-          <textarea className="writing-form-content" ref="content" />
+          <div className="post-summernote"></div>
           <button className="writing-form-submit" type="submit">등록하기</button>
         </form>
       </div>
@@ -34,7 +47,6 @@ class WritingForm extends React.Component {
 
 WritingForm.propTypes = {
   params: React.PropTypes.object.isRequired,
-  dispatch: React.PropTypes.func.isRequired,
 };
 
-export default connect()(WritingForm);
+export default WritingForm;

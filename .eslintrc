@@ -14,7 +14,8 @@
     "expect": true,
     "beforeEach": true,
     "ga": true,
-    "Meteor": true
+    "Meteor": true,
+    "$": true
   },
   "rules": {
     "arrow-body-style": 0,

@@ -2,19 +2,25 @@ import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 
 class SubPostWritingForm extends React.Component {
+  componentDidMount() {
+    $('.subpost-summernote').summernote({
+      height: 300,
+    });
+  }
+
   handleSubmit(e) {
     e.preventDefault();
     const { post } = this.props;
 
     Meteor.call('subPosts.insert', {
-      content: this.refs.content.value,
+      content: $('.subpost-summernote').summernote('code'),
       tagId: post.get('tagId'),
       postId: post.get('_id'),
     }, (err) => {
       if (err) {
         alert(err.message);
       } else {
-        this.refs.content.value = '';
+        $('.subpost-summernote').summernote('code', '');
       }
     });
   }
@@ -22,7 +28,7 @@ class SubPostWritingForm extends React.Component {
   render() {
     return (
       <form className="sub-post-form" onSubmit={(e) => { this.handleSubmit(e); }}>
-        <textarea ref="content" className="sub-post-textarea"></textarea>
+        <div className="subpost-summernote"></div>
         <button type="submit" className="sub-post-submit-btn">등록</button>
       </form>
     );

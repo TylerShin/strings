@@ -1,20 +1,23 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import { render } from 'react-dom';
-import { Router, browserHistory } from 'react-router';
+import { applyRouterMiddleware, Router, browserHistory } from 'react-router';
 import { createStore, applyMiddleware } from 'redux';
-import { routerMiddleware, syncHistoryWithStore } from 'react-router-redux';
 import thunkMiddleware from 'redux-thunk';
 import createLogger from 'redux-logger';
 import { Provider } from 'react-redux';
-import withScroll from 'scroll-behavior';
+import useScroll from 'react-router-scroll';
 import Immutable from 'immutable';
 import rootReducer from '../imports/rootReducer';
 import '../imports/startup/accounts-config.js';
 import routes from '../imports/routes';
 import { loadUser } from '../imports/actions';
 
-const routerMid = routerMiddleware(browserHistory);
+// SETUP CLOUDINARY
+$.cloudinary.config({ // eslint-disable-line
+  cloud_name: 'pengyou',
+});
+
 
 // Set logger middleware to convert from ImmutbaleJS to plainJS
 const logger = createLogger({
@@ -34,18 +37,13 @@ const logger = createLogger({
 // Create store
 const store = createStore(
   rootReducer,
-  applyMiddleware(routerMid, thunkMiddleware, logger)
+  applyMiddleware(thunkMiddleware, logger)
 );
-
-const appHistory = withScroll(syncHistoryWithStore(
-    browserHistory,
-    store
-  ));
 
 Meteor.startup(() => {
   render(
     <Provider store={store}>
-      <Router history={appHistory} children={routes} />
+      <Router history={browserHistory} children={routes} render={applyRouterMiddleware(useScroll())} />
     </Provider>
     ,
     document.getElementById('render-target'));

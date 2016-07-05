@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor'
-import { push } from 'react-router-redux';
+import { browserHistory } from 'react-router';
 
 export const login = ({ username, password }) => {
   return (dispatch) => {
@@ -7,7 +7,7 @@ export const login = ({ username, password }) => {
       if (err) {
         alert('로그인 중 에러가 발생했습니다.', err.message);
       } else {
-        dispatch(push('/'));
+        browserHistory.push('/');
       }
     });
   };

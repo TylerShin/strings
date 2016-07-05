@@ -3,6 +3,12 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import moment from 'moment';
 
 const SubPostShow = ({ subPost }) => {
+  function createMarkup() {
+    return {
+      __html: subPost.get('content'),
+    };
+  }
+
   return (
     <div className="subpost-component">
       <div className="subpost-info clearfix">
@@ -11,7 +17,7 @@ const SubPostShow = ({ subPost }) => {
           {moment(subPost.get('createdAt')).fromNow()}
         </div>
       </div>
-      {subPost.get('content')}
+      <div dangerouslySetInnerHTML={createMarkup()} />
     </div>
   );
 };

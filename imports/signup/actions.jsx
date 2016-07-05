@@ -1,5 +1,5 @@
 import { Accounts } from 'meteor/accounts-base'
-import { push } from 'react-router-redux';
+import { browserHistory } from 'react-router';
 
 export const createUser = ({ username, email, password }) => {
   return (dispatch) => {
@@ -15,7 +15,7 @@ export const createUser = ({ username, email, password }) => {
       if (err) {
         alert('회원가입 중 문제가 발생했습니다!', err.reason);
       } else {
-        dispatch(push('/'));
+        browserHistory.push('/');
       }
     });
   };

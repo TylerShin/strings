@@ -1,5 +1,4 @@
 import { combineReducers } from 'redux';
-import { routerReducer } from 'react-router-redux';
 import currentUser, { INITIAL_CURRENT_USER } from './reducers/currentUser';
 import tags, { INITIAL_TAGS } from './reducers/tags';
 import posts, { INITIAL_POSTS } from './reducers/posts';
@@ -23,7 +22,6 @@ const rootReducer = combineReducers({
   post,
   subPosts,
   comments,
-  routing: routerReducer,
 });
 
 export default rootReducer;

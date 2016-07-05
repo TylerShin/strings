@@ -29,6 +29,12 @@ class Post extends React.Component {
   }
 
   render() {
+    function createMarkup() {
+      return {
+        __html: post.get('content'),
+      };
+    }
+
     const { params, post, currentUser, subPosts } = this.props;
     if (post.isEmpty()) {
       return (
@@ -70,7 +76,7 @@ class Post extends React.Component {
           </div>
           <div className="post-body">
             <div className="post-content">
-              {post.get('content')}
+              <div dangerouslySetInnerHTML={createMarkup()} />
             </div>
           </div>
           {CommentFormNode}
