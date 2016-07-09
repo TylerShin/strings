@@ -1,16 +1,70 @@
 import React from 'react';
 import { browserHistory } from 'react-router';
+import { Cloudinary } from 'meteor/lepozepo:cloudinary';
+import Spinner from 'react-spinner';
 
 class WritingForm extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isFileUploading: false,
+      uploadedPublicIds: [],
+    };
+  }
   componentDidMount() {
-    $('.post-summernote').summernote({
+    const self = this;
+    this.summerNote = $('.post-summernote').summernote({
       height: 400,
+      callbacks: {
+        onImageUpload(files) {
+          self.setState({
+            isFileUploading: true,
+          });
+          if (files.length > 1) {
+            let uploadCompletedCounter = 0;
+            Cloudinary.upload(files, {}, (err, res) => {
+              if (err) {
+                alert('Error가 발생했습니다.');
+              } else {
+                uploadCompletedCounter += 1;
+                const newArr = self.state.uploadedPublicIds.concat([res.public_id]);
+                self.setState({
+                  uploadedPublicIds: newArr,
+                });
+                self.summerNote.summernote('insertImage', res.url);
+                if (uploadCompletedCounter === files.length) {
+                  self.setState({
+                    isFileUploading: false,
+                  });
+                }
+              }
+            });
+          } else {
+            Cloudinary.upload(files, {}, (err, res) => {
+              if (err) {
+                alert(err.message);
+              } else {
+                self.setState({
+                  isFileUploading: false,
+                });
+                const newArr = self.state.uploadedPublicIds.concat([res.public_id]);
+                self.setState({
+                  uploadedPublicIds: newArr,
+                });
+                self.summerNote.summernote('insertImage', res.url);
+              }
+            });
+          }
+        },
+      },
     });
   }
 
   handleSubmit(e) {
     e.preventDefault();
     const tagId = this.props.params.tagId;
+    const publicIds = this.state.uploadedPublicIds;
     const title = this.refs.title.value;
     const content = $('.post-summernote').summernote('code');
     if (!tagId) {
@@ -21,6 +75,7 @@ class WritingForm extends React.Component {
       title,
       content,
       tagId,
+      publicIds,
     }, (err) => {
       if (err) {
         alert(err.message);
@@ -31,8 +86,19 @@ class WritingForm extends React.Component {
   }
 
   render() {
+    const { isFileUploading } = this.state;
+    let spinner;
+    if (isFileUploading) {
+      spinner = (
+        <div className="post-writing-form-spinner-wrapper">
+          <Spinner />
+        </div>
+      );
+    }
+
     return (
       <div className="writing-form-component">
+        {spinner}
         <form className="writing-form-form" onSubmit={(e) => { this.handleSubmit(e); }}>
           <label>제목</label>
           <input type="text" ref="title" />

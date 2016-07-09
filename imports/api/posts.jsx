@@ -16,7 +16,7 @@ if (Meteor.isServer) {
 }
 
 Meteor.methods({
-  'posts.insert'({ title, content, tagId }) {
+  'posts.insert'({ title, content, tagId, publicIds }) {
     check(title, String);
     check(content, String);
     check(tagId, String);
@@ -28,6 +28,7 @@ Meteor.methods({
       tagId,
       title,
       content,
+      publicIds,
       userId: this.userId,
       createdAt: new Date(),
       updatedAt: new Date(),
