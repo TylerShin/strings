@@ -1,39 +1,28 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
-import { connect } from 'react-redux';
+import { fromJS } from 'immutable';
+import { createContainer } from 'meteor/react-meteor-data';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { loadTags, addTag } from '../../taglist/actions';
+import { Tags } from '../../api/tags';
 
 class TagAdmin extends React.Component {
-  componentWillMount() {
-    this.tagSubs = Meteor.subscribe('tags');
-  }
-
-  componentDidMount() {
-    const { dispatch } = this.props;
-    dispatch(loadTags());
-  }
-
-  componentWillUnmount() {
-    this.tagSubs.stop();
-  }
-
   handleAddTag(e) {
-    const { dispatch } = this.props;
     e.preventDefault();
     const newTag = this.refs.tag.value;
-
-    dispatch(addTag({
-      tagName: newTag,
-    }));
-    this.refs.tag.value = '';
+    Meteor.call('tags.insert', newTag, (err) => {
+      if (err) {
+        alert(err.message);
+      } else {
+        this.refs.tag.value = '';
+      }
+    });
   }
 
   render() {
     const { tags } = this.props;
     let tagListNode;
-    if (tags.get('tags').count() > 0) {
-      tagListNode = tags.get('tags').map((tag, index) => {
+    if (tags.count() > 0) {
+      tagListNode = tags.map((tag, index) => {
         return (
           <li key={index}>
             {tag.get('tag')}
@@ -59,16 +48,19 @@ class TagAdmin extends React.Component {
 }
 
 TagAdmin.propTypes = {
-  dispatch: React.PropTypes.func.isRequired,
   currentUser: ImmutablePropTypes.map.isRequired,
-  tags: ImmutablePropTypes.map.isRequired,
+  tags: ImmutablePropTypes.list.isRequired,
+  tagSubsReady: React.PropTypes.bool.isRequired,
 };
 
-function mapStateToProps(state) {
-  const { currentUser, tags } = state;
+export default createContainer(() => {
+  const tagSubs = Meteor.subscribe('tags');
+  const tagSubsReady = tagSubs.ready();
+  const tags = fromJS(Tags.find().fetch());
+  const currentUser = fromJS(Meteor.user()) || fromJS({});
   return {
-    currentUser,
     tags,
+    tagSubsReady,
+    currentUser,
   };
-}
-export default connect(mapStateToProps)(TagAdmin);
+}, TagAdmin);

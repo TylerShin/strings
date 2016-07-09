@@ -1,5 +1,6 @@
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
+import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { login } from './actions';
 
@@ -25,6 +26,11 @@ class Signin extends React.Component {
           <input type="password" placeholder="암호" ref="password" />
           <button type="submit">로그인</button>
         </form>
+        <span>아직까지 계정이 없으시다면? </span>
+        <Link to="/signup">
+          회원가입
+        </Link>
+        하세요.
       </div>
     );
   }

@@ -29,13 +29,14 @@ class Post extends React.Component {
   }
 
   render() {
+    const { params, post, currentUser, subPosts } = this.props;
+
     function createMarkup() {
       return {
         __html: post.get('content'),
       };
     }
 
-    const { params, post, currentUser, subPosts } = this.props;
     if (post.isEmpty()) {
       return (
         <div>
@@ -51,7 +52,7 @@ class Post extends React.Component {
 
     let commentFormNode = null;
     if (!currentUser.isEmpty()) {
-      CommentFormNode = <CommentForm post={post} />
+      commentFormNode = <CommentForm post={post} />;
     }
 
     return (
@@ -79,7 +80,7 @@ class Post extends React.Component {
               <div dangerouslySetInnerHTML={createMarkup()} />
             </div>
           </div>
-          {CommentFormNode}
+          {commentFormNode}
         </div>
         <div className="subposts-wrapper">
           {subPostsNode}
