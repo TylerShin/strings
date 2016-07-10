@@ -12,6 +12,7 @@ import { SubPosts } from '../../api/subPosts';
 import SubPostWritingForm from '../subPostWritingForm/subPostWritingForm';
 import SubPostShow from '../subPostShow/subPostShow';
 import PostsContainer from '../posts';
+import CommentsContainer from '../comments/comments';
 
 const subPostSubsCount = new ReactiveVar(20);
 class Post extends React.Component {
@@ -92,7 +93,7 @@ class Post extends React.Component {
               <div dangerouslySetInnerHTML={createMarkup()} />
             </div>
           </div>
-          {/* TODO: Added comments node  */}
+          <CommentsContainer post={post} />
         </div>
         <div className="subposts-wrapper">
           {subPostsNode}
