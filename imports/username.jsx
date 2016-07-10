@@ -9,7 +9,7 @@ class Username extends React.Component {
     const { className, user } = this.props;
     return (
       <div className={className}>
-        {user.get('username')}
+        {user.get('_id')}
       </div>
     );
   }
@@ -17,7 +17,7 @@ class Username extends React.Component {
 
 Username.propTypes = {
   user: ImmutablePropTypes.map.isRequired,
-  userId: React.PropTypes.number.isRequired,
+  userId: React.PropTypes.string.isRequired,
   usernameSubsReady: React.PropTypes.bool.isRequired,
   className: React.PropTypes.string,
 };

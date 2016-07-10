@@ -59,15 +59,6 @@ class Post extends React.Component {
       );
     });
 
-    let commentsNode = null;
-    if (isCommentsOpened) {
-      commentsNode = (
-        <div>
-          gogogogogogo
-        </div>
-      );
-    }
-
     return (
       <div className="post-component">
         <div className="post-wrapper">
@@ -75,12 +66,12 @@ class Post extends React.Component {
             <div className="post-show-title">
               {post.get('title')}
               <span className="post-title-comment-count">
-                {`[${post.get('subPostsCount')}]`}
+                {` [${post.get('subPostsCount')}]`}
               </span>
             </div>
             <div className="post-info">
               <div className="owner-info">
-                발의자 : {post.get('userId')}
+                발의자 : {post.get('userId').slice(2, 8)}
               </div>
               <div className="updated-at">
                 <span>최근 업데이트 : </span>
