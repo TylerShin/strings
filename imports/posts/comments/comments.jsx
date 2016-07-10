@@ -12,8 +12,8 @@ class CommentsContainer extends React.Component {
 
     const commentsNode = comments.map((comment) => {
       return (
-          <CommentItem key={comment.get('_id')} comment={comment} />
-        );
+        <CommentItem key={comment.get('_id')} comment={comment} />
+      );
     });
 
     return (
@@ -29,11 +29,12 @@ class CommentsContainer extends React.Component {
 
 CommentsContainer.propTypes = {
   currentUser: ImmutablePropTypes.map.isRequired,
+  post: ImmutablePropTypes.map.isRequired,
   comments: ImmutablePropTypes.list.isRequired,
   commentsSubsReady: React.PropTypes.bool.isRequired,
 };
 
-export default createContainer(({ params, post }) => {
+export default createContainer(({ post }) => {
   const commentsSubs = Meteor.subscribe('comments', {
     postId: post.get('_id'),
   });
@@ -45,5 +46,5 @@ export default createContainer(({ params, post }) => {
     currentUser,
     commentsSubsReady,
     comments,
-  }
+  };
 }, CommentsContainer);
