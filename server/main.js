@@ -5,8 +5,11 @@ import '../imports/api/posts';
 import '../imports/api/subPosts';
 import '../imports/api/comments';
 
+console.log(process.env);
+
 Cloudinary.config({
   cloud_name: 'pengyou',
-  api_key: '165877321498385',
-  api_secret: 'u1hmZTT97rR5R_vRyOvku3tHGmk',
+  api_key: process.env.CLOUDINARY_KEY,
+  api_secret: process.env.CLOUDINARY_SECRET_KEY,
 });
+
