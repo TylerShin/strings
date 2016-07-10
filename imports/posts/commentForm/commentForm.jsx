@@ -22,9 +22,14 @@ class CommentForm extends React.Component {
 
   render() {
     return (
-      <div className="comment-form-component">
+      <div className="comment-form-component clearfix">
         <form onSubmit={(e) => { this.handleSubmit(e); }}>
-          <input type="text" className="comment-form-comment-input" ref="content" />
+          <input
+            type="text"
+            className="comment-form-comment-input"
+            ref="content"
+            placeholder="댓글을 남겨보세요."
+          />
           <button className="comment-form-submit-btn" type="submit">등록</button>
         </form>
       </div>

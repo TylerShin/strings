@@ -7,8 +7,8 @@ import { SubPosts } from './subPosts';
 export const Comments = new Mongo.Collection('comments');
 
 if (Meteor.isServer) {
-  Meteor.publish('comments', ({ postId, before, count }) => {
-    return Comments.find({ postId }, { sort: { updatedAt: 1 }, skip: before, limit: count });
+  Meteor.publish('comments', ({ postId }) => {
+    return Comments.find({ postId }, { sort: { updatedAt: 1 } });
   });
 }
 

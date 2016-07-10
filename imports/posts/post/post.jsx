@@ -12,10 +12,18 @@ import { SubPosts } from '../../api/subPosts';
 import SubPostWritingForm from '../subPostWritingForm/subPostWritingForm';
 import SubPostShow from '../subPostShow/subPostShow';
 import PostsContainer from '../posts';
-import CommentForm from '../commentForm/commentForm';
+import CommentsContainer from  '../comments/comments';
 
 const subPostSubsCount = new ReactiveVar(20);
 class Post extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isCommentsOpened: false,
+    };
+  }
+
   componentWillUnmount() {
     subPostSubsCount.set(20);
   }
@@ -30,6 +38,7 @@ class Post extends React.Component {
 
   render() {
     const { params, post, currentUser, subPosts } = this.props;
+    const { isCommentsOpened } = this.state;
 
     function createMarkup() {
       return {
@@ -50,9 +59,13 @@ class Post extends React.Component {
       );
     });
 
-    let commentFormNode = null;
-    if (!currentUser.isEmpty()) {
-      commentFormNode = <CommentForm post={post} />;
+    let commentsNode = null;
+    if (isCommentsOpened) {
+      commentsNode = (
+        <div>
+          gogogogogogo
+        </div>
+      );
     }
 
     return (
@@ -80,7 +93,7 @@ class Post extends React.Component {
               <div dangerouslySetInnerHTML={createMarkup()} />
             </div>
           </div>
-          {commentFormNode}
+          <CommentsContainer post={post} />
         </div>
         <div className="subposts-wrapper">
           {subPostsNode}

@@ -1,0 +1,10 @@
+.comment-item-wrapper {
+  padding: 10px 5px;
+  border: 1px solid #eceff1;
+  border-bottom: 0;
+  border-radius: 3px;
+
+  &:last-child {
+    border-bottom: 1px solid #eceff1;
+  }
+}
