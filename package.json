@@ -2,7 +2,8 @@
   "name": "simple-todos",
   "private": true,
   "scripts": {
-    "start": "meteor run"
+    "start": "meteor run",
+    "deploy": "meteor bundle package.tar.gz && scp package.tar.gz ubuntu@52.78.79.68:"
   },
   "dependencies": {
     "classnames": "^2.2.3",

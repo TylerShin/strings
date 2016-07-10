@@ -90,7 +90,7 @@ class WritingForm extends React.Component {
     let spinner;
     if (isFileUploading) {
       spinner = (
-        <div className="post-writing-form-spinner-wrapper">
+        <div className="spinner-page-overlay-wrapper">
           <Spinner />
         </div>
       );

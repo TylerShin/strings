@@ -33,3 +33,15 @@
   0% { opacity: 1; }
   100% { opacity: 0.15; }
 }
+
+.spinner-page-overlay-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+  background-color: rgba(0, 0, 0, .3);
+  display: flex;
+  align-items: center;
+}
