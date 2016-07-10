@@ -5,8 +5,6 @@ import '../imports/api/posts';
 import '../imports/api/subPosts';
 import '../imports/api/comments';
 
-console.log(process.env);
-
 Cloudinary.config({
   cloud_name: 'pengyou',
   api_key: process.env.CLOUDINARY_KEY,

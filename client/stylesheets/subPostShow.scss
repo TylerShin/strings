@@ -9,6 +9,10 @@
   &:last-child {
     border-bottom: 1px solid #efefef;
   }
+
+  img {
+    max-width: 100%;
+  }
 }
 
 .subpost-info {
